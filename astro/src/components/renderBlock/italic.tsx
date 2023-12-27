@@ -1,0 +1,1 @@
+export default ({ children }: any) => <em>{children}</em>;

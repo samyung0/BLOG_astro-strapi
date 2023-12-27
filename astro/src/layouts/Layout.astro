@@ -1,0 +1,82 @@
+---
+interface Props {
+  title: string;
+  noPaddingTop?: boolean;
+}
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import "highlight.js/styles/tokyo-night-dark.min.css";
+const { title, noPaddingTop } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Nav />
+    {
+      noPaddingTop ? (
+        <slot />
+      ) : (
+        <div class="lg:px-[10vw] pt-[40vh] md:px-12 px-6 min-h-[100vh]">
+          <slot />
+        </div>
+      )
+    }
+    <Footer />
+  </body>
+</html>
+<style is:global>
+  @font-face {
+    font-family: "mosk";
+    src: url("/font/mosk/Mosk Normal.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "mosk";
+    src: url("/font/mosk/Mosk Bold 700.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Cascadia Code";
+    src: url("/font/Cascadia Code/CascadiaCode.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  html {
+    line-height: 1;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background: #f7f7f7;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    padding: 0;
+    margin: 0;
+    line-height: inherit;
+  }
+</style>

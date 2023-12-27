@@ -1,0 +1,27 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "../../layouts/Layout.astro";
+import PostPreview from "../../components/PostPreview.astro";
+import Tags from "../../components/Tags.astro";
+import { categories, posts } from "../../util";
+export const getStaticPaths = (async () => {
+  return categories.data.map((tag) => {
+    return {
+      params: {
+        tag: tag.attributes.slug,
+      },
+    };
+  });
+}) satisfies GetStaticPaths;
+const { tag } = Astro.params;
+---
+
+<Layout title="Tags">
+  <h1 class="font-mosk text-primary-gray font-bold text-[6em] pb-4 tracking-wider">Tag: {tag}</h1>
+  <PostPreview
+    data={posts.data.filter((post) =>
+      post.attributes.categories.data.map((postTag) => postTag.attributes.slug).includes(tag)
+    )}
+  />
+  <Tags tags={categories.data} />
+</Layout>

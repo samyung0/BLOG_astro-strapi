@@ -1,0 +1,94 @@
+---
+import { Image } from "astro:assets";
+import TimeSVG from "../../src/svg/time-outline.svg";
+import LabelsSVG from "../../src/svg/pricetags-outline.svg";
+import LabelSVG from "../../src/svg/pricetag-outline.svg";
+import type Post from "../PostType";
+type Props = { data: Post["data"] };
+const { data } = Astro.props;
+---
+
+<article>
+  <div class="md:pt-[6vw] xl:max-w-[1200px] xl:mx-auto lg:mx-[5vw] md:mx-[6vw] pt-12 md:p-0">
+    <ul
+      class="grid xl:grid-cols-3 xl:gap-x-24 lg:gap-y-[6vw] lg:gap-x-24 md:grid-cols-2 gap-12 grid-cols-1"
+    >
+      {
+        data.map(
+          ({ attributes: { thumbnail, slug, createdAt, title, categories, readingTime } }) => (
+            <li>
+              <div class="text-center">
+                {thumbnail.data && (
+                  <a class="inline-block" href={`/post/${slug}`}>
+                    <Image
+                      class="max-h-[230px] w-full object-contain object-bottom"
+                      src={import.meta.env.STRAPI_URL + thumbnail.data.attributes.url}
+                      alt="Thumbnail"
+                      width={thumbnail.data!.attributes.width}
+                      height={thumbnail.data!.attributes.height}
+                    />
+                  </a>
+                )}
+              </div>
+              <div>
+                <div class="md:mt-2 bg-[linear-gradient(to_bottom,rgba(255,255,255,0)_50%,rgba(125,125,125,.255)_50%,rgba(255,255,255,0)_calc(50%+3px),rgba(255,255,255,0)_100%)]">
+                  <span class="text-primary-gray tracking-wide md:text-xs text-[0.5rem] leading-4 font-bold bg-background-gray md:pr-4 pr-2">
+                    {new Date(createdAt).toDateString().slice(4)}
+                  </span>
+                </div>
+                <a
+                  class="pt-2 block font-bold tracking-wider md:text-xl text-lg text-primary-gray"
+                  href={`/post/${slug}`}
+                >
+                  <h3>{title}</h3>
+                </a>
+                <div class="pt-1 flex items-center space-x-2">
+                  <span>
+                    <Image class="md:h-5 md:w-5 h-3 w-3" src={TimeSVG} alt="" />
+                  </span>
+                  <span class="text-primary-gray tracking-wide md:text-sm text-xs md:font-bold">
+                    {readingTime} min read
+                  </span>
+                </div>
+                {categories.data.length > 0 && (
+                  <div class="pt-1 flex items-center space-x-2">
+                    <span>
+                      {categories.data.length > 1 ? (
+                        <Image class="md:h-5 md:w-5 h-3 w-3 md:mt-0 mt-[2px]" src={LabelsSVG} alt="" />
+                      ) : (
+                        <Image class="md:h-5 md:w-5 h-3 w-3 md:mt-0 mt-[2px]" src={LabelSVG} alt="" />
+                      )}
+                    </span>
+                    <span>
+                      {(() => {
+                        let tagsDisplay = categories.data.map(({ attributes }) => (
+                          <a
+                            class="text-primary-gray tracking-wide md:text-sm text-xs md:font-bold"
+                            href={`/tag/${attributes.slug}`}
+                          >
+                            {attributes.name}
+                          </a>
+                        ));
+                        if (tagsDisplay.length > 3) {
+                          tagsDisplay = tagsDisplay.slice(0, 3);
+                          tagsDisplay.push("...");
+                        }
+                        const ret = [];
+                        ret.push(tagsDisplay[0]);
+                        for (let i = 1; i < tagsDisplay.length; i++) {
+                          ret.push(", ");
+                          ret.push(tagsDisplay[i]);
+                        }
+                        return ret;
+                      })()}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </li>
+          )
+        )
+      }
+    </ul>
+  </div>
+</article>

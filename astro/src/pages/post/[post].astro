@@ -1,0 +1,62 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "../../layouts/Layout.astro";
+import p from "../../components/renderBlock/p";
+import code from "../../components/renderBlock/code";
+import strikethrough from "../../components/renderBlock/strikethrough";
+import underline from "../../components/renderBlock/underline";
+import inlineCode from "../../components/renderBlock/inlineCode";
+import listItem from "../../components/renderBlock/listItem";
+import list from "../../components/renderBlock/list";
+import image from "../../components/renderBlock/image";
+import italic from "../../components/renderBlock/italic";
+import bold from "../../components/renderBlock/bold";
+import heading from "../../components/renderBlock/heading";
+import quote from "../../components/renderBlock/quote";
+import link from "../../components/renderBlock/link";
+import Tags from "../../components/Tags.astro";
+import { BlocksRenderer } from "@strapi/blocks-react-renderer";
+import { categories, posts } from "../../util";
+export const getStaticPaths = (async () => {
+  return posts.data.map((post) => {
+    return {
+      params: {
+        post: post.attributes.slug,
+      },
+    };
+  });
+}) satisfies GetStaticPaths;
+const { post } = Astro.params;
+const postContent = posts.data.filter((post2) => post2.attributes.slug === post)[0];
+---
+
+<Layout title="Post">
+  <h1 class="font-mosk text-primary-gray font-bold text-[4em] pb-4 tracking-wider">
+    {postContent.attributes.title}
+  </h1>
+  <div
+    class="lg:pt-[6vw] md:pt-[10vw] xl:max-w-[1100px] xl:mx-auto lg:mx-[5vw] md:mx-[6vw] md:tracking-wide md:leading-8 leading-6"
+  >
+    <BlocksRenderer
+      content={postContent.attributes.content}
+      blocks={{
+        paragraph: p,
+        code,
+        "list-item": listItem,
+        list,
+        image,
+        heading,
+        quote,
+        link,
+      }}
+      modifiers={{
+        strikethrough,
+        underline,
+        code: inlineCode,
+        italic,
+        bold,
+      }}
+    />
+  </div>
+  <Tags tags={categories.data} />
+</Layout>

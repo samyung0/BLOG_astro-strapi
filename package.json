@@ -1,0 +1,13 @@
+{
+  "name": "astro_strapi",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "concurrently --handle-input -c \"auto\" \"cd strapi && npm run develop\" \"cd astro && npm run dev\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

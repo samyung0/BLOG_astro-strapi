@@ -1,0 +1,1 @@
+export default (props: any) => <img className="my-2 max-w-[800px] block mx-auto" src={props.image.url} alt={props.image.alternativeText} />

@@ -1,0 +1,35 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import { author } from "../../util";
+---
+
+<Layout noPaddingTop title="Blog Posts">
+  <div class="min-h-[100vh] lg:px-[10vw] px-[8vw] flex flex-col justify-center items-center">
+    {
+      author.attributes.bioImage.data && (
+        <div>
+          <Image
+            class="lg:h-[256px] lg:w-[256px] md:h-[200px] md:w-[200px] h-[140px] w-[140px] object-contain rounded-full"
+            src={import.meta.env.STRAPI_URL + author.attributes.bioImage.data?.attributes.url}
+            alt="Profile Pic"
+            height={author.attributes.bioImage.data?.attributes.height}
+            width={author.attributes.bioImage.data?.attributes.width}
+          />
+        </div>
+      )
+    }
+    <h1 class="font-gilroy text-primary-gray font-bold text-[2em] pt-12 pb-6">{author.attributes.name}</h1>
+    <p class="tracking-wide leading-8">{author.attributes.bio}</p>
+  </div>
+</Layout>
+
+<style>
+  @font-face {
+    font-family: "gilroy";
+    src: url("/font/gilroy/Gilroy-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
