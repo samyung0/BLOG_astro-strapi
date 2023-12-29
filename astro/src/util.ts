@@ -37,12 +37,13 @@ const queryAuthor = qs.stringify({
   },
   fields: ["name", "bio"],
   filters: {
-    name: "Sam Yung",
+    slug: "sam-yung",
   },
 });
 export const posts = (await fetch(import.meta.env.STRAPI_URL + "/api/posts?" + query).then(
   (response) => response.json()
 )) as Posts;
+
 export const categories = (await fetch(
   import.meta.env.STRAPI_URL + "/api/categories?" + queryCategories
 ).then((response) => response.json())) as Category;

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "post",
     "pluralName": "posts",
-    "displayName": "Post",
+    "displayName": "Posts",
     "description": ""
   },
   "options": {
@@ -14,27 +14,28 @@
   "attributes": {
     "title": {
       "type": "string",
-      "unique": false,
-      "required": true
-    },
-    "thumbnail": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ]
+      "required": true,
+      "unique": true
     },
     "slug": {
       "type": "uid",
       "targetField": "title",
       "required": true
     },
-    "author": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::author.author",
-      "inversedBy": "posts"
+    "content": {
+      "type": "blocks",
+      "required": true
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "readingTime": {
+      "type": "integer"
     },
     "categories": {
       "type": "relation",
@@ -42,17 +43,11 @@
       "target": "api::category.category",
       "inversedBy": "posts"
     },
-    "readingTime": {
-      "type": "integer"
-    },
-    "relatedPosts": {
+    "author": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::post.post"
-    },
-    "content": {
-      "type": "blocks",
-      "required": true
+      "relation": "manyToOne",
+      "target": "api::author.author",
+      "inversedBy": "posts"
     }
   }
 }
